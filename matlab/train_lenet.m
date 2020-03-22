@@ -33,7 +33,6 @@ no_epochs = 100;
 %% Use the following to train from scratch
 params = init_convnet(layers);
 
-
 %% Load the network
 load lenet_pretrained.mat
 
