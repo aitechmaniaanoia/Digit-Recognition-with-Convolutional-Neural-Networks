@@ -30,21 +30,23 @@ input_n.channel = c;
 %find index of middle pixel in kernel
 mid = (k + 1)/2;
 %result = zeros([h_out, w_out, num]);
-results = [];
+output.data = zeros([h_out, w_out, num, batch_size]);
 
 for b = 1:batch_size
-    result = [];
-    x = reshape(input.data(:,b),h_in,w_in);
-    x = padarray(x, [pad,pad], 0);
-    [length, width] = size(x);
-    
-    for k_num = 1:num
-        x1 = zeros(size(x));
+    %result = [];
+    x = reshape(input.data(:,b),[h_in,w_in, c]);
+    %x = padarray(x, [pad,pad], 0);
+    [length,width,~] = size(x);
+    for k_num = 1:num 
+        %x = X(:,:,k_num);
+        x1 = zeros(h_in,w_in);
+        
         kernel = param.w(:,k_num);
-        kernel = reshape(kernel,k,k);
+        kernel = reshape(kernel,k,k,c);
         for i = 1:k
             for j = 1:k
-                conv_img = kernel(i,j)*x;
+                conv_img = kernel(i,j,:).*x;
+                conv_img = sum(conv_img,3);
                 if i > mid
                     %move top i-mid row to bottom
                     size_add = size(conv_img(1:(i-mid),:));
@@ -79,14 +81,15 @@ for b = 1:batch_size
         % add bias
         bias = param.b(k_num);
         x1 = x1 + bias;
-        x1 = reshape(x1, [size(x1,1)*size(x1,2) 1]);
-        result = [result; x1];
+        
+        output.data(:,:,k_num,b) = x1; %[h_out, w_out, num, batch_size]
+        %x1 = reshape(x1, [size(x1,1)*size(x1,2) 1]);
+        %result = [result; x1];
     end
-    
-    results = [results result];
+    %results = [results result];
 end
-
-output.data = results;
+output.data = reshape(output.data, [h_out*w_out*num,batch_size]);
+%output.data = results;
 output.height = h_out;
 output.width = w_out;
 output.channel = num;
