@@ -34,7 +34,7 @@ no_epochs = 100;
 params = init_convnet(layers);
 
 %% Load the network
-load lenet_pretrained.mat
+load('../matlab/lenet_pretrained.mat');
 
 param_winc = params;
 for l_idx = 1:length(layers)-1

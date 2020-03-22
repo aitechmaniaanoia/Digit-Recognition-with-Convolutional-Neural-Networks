@@ -11,7 +11,7 @@ n = size(param.w, 2);
 % Replace the following line with your implementation.
 % w [m n] m this layer n previous layer
 % b [m 1]
-output.data = zeros([n, k]);
-output.data = w*input + b;
+%output.data = zeros([n, k]);
+output.data = param.w*input + param.b;
 
 end
