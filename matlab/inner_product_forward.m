@@ -18,8 +18,8 @@ for b = 1:k
     output.data(:,b) = param.w(:,b)'*data + param.b(:,b);
 end
 
-output.height = 1;
+output.height = n;
 output.width = 1;
-output.channel = n;
+output.channel = 1;
 output.batch_size = k;
 end
