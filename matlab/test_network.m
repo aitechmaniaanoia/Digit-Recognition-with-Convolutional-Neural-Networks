@@ -12,4 +12,5 @@ load lenet.mat
 % Modify the code to get the confusion matrix
 for i=1:100:size(xtest, 2)
     [output, P] = convnet_forward(params, layers, xtest(:, i:i+99));
+    
 end
