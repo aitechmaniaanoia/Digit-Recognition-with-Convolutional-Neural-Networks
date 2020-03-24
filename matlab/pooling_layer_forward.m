@@ -22,13 +22,15 @@ function [output] = pooling_layer_forward(input, layer)
         data = input.data(:,b);
         data = reshape(data, [h_in,w_in,c]);
         %data = padarray(data, [pad,pad],0);
+        num_h = 0;
+        num_w = 0;
         for i = 1:h_out
             for j = 1:w_out
-                num = 0;
-                kernel = data(i+k*num:i+(k*num+1), j+k*num:j+(k*num+1),:);
+                kernel = data(i+k*num_h:i+(k*num_h+1), j+k*num_w:j+(k*num_w+1),:);
                 output.data(i,j,:,b) = max(kernel,[],[1 2]);
-                num = num + 1;
+                num_w = num_w + 1;
             end
+            num_h = num_h + 1;
         end
     end
     output.data = reshape(output.data, h_out*w_out*c, batch_size);

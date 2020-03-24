@@ -35,14 +35,14 @@ output.data = zeros([h_out, w_out, num, batch_size]);
 for b = 1:batch_size
     %result = [];
     x = reshape(input.data(:,b),[h_in,w_in, c]);
-    %x = padarray(x, [pad,pad], 0);
+    x = padarray(x, [pad,pad], 0);
     [length,width,~] = size(x);
     for k_num = 1:num 
         %x = X(:,:,k_num);
-        x1 = zeros(h_in,w_in);
-        
+        %x1 = zeros(h_in,w_in);
+        x1 = zeros(size(x));
         kernel = param.w(:,k_num);
-        kernel = reshape(kernel,k,k,c);
+        kernel = reshape(kernel,k,k,c); 
         for i = 1:k
             for j = 1:k
                 conv_img = kernel(i,j,:).*x;
@@ -76,7 +76,10 @@ for b = 1:batch_size
             end
         end
         %remove padding
-        x1 = x1((mid-1+pad+1):(length-pad-mid+1), (mid-1+pad+1):(width-pad-mid+1));
+        %x1 = x1((mid-1+pad+1):(length-pad-mid+1), (mid-1+pad+1):(width-pad-mid+1));
+        cut_l = (length - w_out)/2;
+        cut_w = (width - w_out)/2;
+        x1 = x1(cut_l+1:cut_l+h_out, cut_w+1:cut_w+w_out);
         % x1 conv result for each img
         % add bias
         bias = param.b(k_num);
