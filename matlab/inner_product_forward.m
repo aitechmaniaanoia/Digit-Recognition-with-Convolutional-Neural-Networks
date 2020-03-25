@@ -13,9 +13,9 @@ n = layer.num;
 % w [m n] m this layer n previous layer
 % b [m 1]
 output.data = zeros([n, k]);
+val = param.w'*input.data;
 for b = 1:k
-    data = input.data(:,b);
-    output.data(:,b) = param.w(:,b)'*data + param.b(:,b);
+    output.data(:,b) = val(:,b) + param.b';
 end
 
 output.height = n;

@@ -21,3 +21,7 @@ for i=1:100:size(xtest, 2)
 end
 %confusion_m = confusion_m/size(xtest, 2);
 
+% top 2 confused pairs of classes
+[a,b] = max(confusion_m);
+[val, col] = max(a);
+[~, row] = max()
